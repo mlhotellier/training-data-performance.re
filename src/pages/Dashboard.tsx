@@ -59,15 +59,21 @@ function Dashboard() {
 
   // ✅ Récupérer les objectifs
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchGoals(token!); // Utilisation du service
-        setGoals(data);
-      } catch (err) {
-        console.error("Erreur lors du chargement des objectifs :", err);
-      }
-    };
-    fetchData();
+    const storedActivities = sessionStorage.getItem('goals');
+    if (storedActivities) {
+      setActivities(JSON.parse(storedActivities));
+    } else {
+      const fetchData = async () => {
+        try {
+          const data = await fetchGoals(token!); // Utilisation du service
+          setGoals(data);
+          sessionStorage.setItem('goals', JSON.stringify(data));
+        } catch (err) {
+          console.error("Erreur lors du chargement des objectifs :", err);
+        }
+      };
+      fetchData();
+    }
   }, [token]);
 
   // ✅ Suppression d'un objectif avec confirmation
