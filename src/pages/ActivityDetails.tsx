@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Activity, StreamData } from "../types/index";
+import { Activity, ActivityDetailData, StreamData } from "../types/index";
 import ActivityHeader from "../components/ActivityHeader";
 import Loader from "../components/Loader";
 import BarChart from "../components/BarChart";
@@ -10,6 +10,7 @@ import TrainingGraph from "../components/TrainingGraph";
 import FastestKmBlock from "../components/FastestKmBlock";
 import ActivityMapSummary from "../components/ActivityMapSummary";
 import ActivityChartSection from "../components/ActivityChartSection";
+import PaceBySlope from "../components/PaceBySlope";
 import Footer from "../components/Footer";
 import { getFastestKmsFromStreams } from "../utils/records";
 import { fetchActivityStreams } from "../services/apiServices";
@@ -19,6 +20,7 @@ const ActivityDetail = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [activity, setActivity] = useState<Activity | null>(null);
     const [streamData, setStreamData] = useState<StreamData | null>(null);
+    const [detailData, setDetailData] = useState<ActivityDetailData | null>(null);
     const token = localStorage.getItem('token');
     const allowedTypes = ['Ride', 'Run', 'TrailRun', 'Walk', 'EBikeRide', 'Hike'];
     const fastestRecords = streamData && activity?.activityId ? getFastestKmsFromStreams(streamData, activity.activityId.toString()) : [];
@@ -37,16 +39,9 @@ const ActivityDetail = () => {
     useEffect(() => {
         const fetchData = async () => {
             if (!id || !token) return;
-            const stored = sessionStorage.getItem(`activityDetails-${id}`);
-            if (stored) {
-                const parsed = JSON.parse(stored);
-                setStreamData(parsed.streams);
-                setLoading(false);
-            } else {
-                const data = await fetchActivityStreams(id, token);
-                setStreamData(data.streams);
-                sessionStorage.setItem(`activityDetails-${id}`, JSON.stringify(data));
-            }
+            const data = await fetchActivityStreams(id, token);
+            setStreamData(data.streams);
+            setDetailData(data)
         };
         fetchData();
     }, [id, token]);
@@ -71,8 +66,8 @@ const ActivityDetail = () => {
                             <span className="font-normal">{new Date(activity.start_date).toLocaleDateString()} - {activity.sport_type} -</span> {activity.name}
                         </h2>
 
-                        {allowedTypes.concat("Hike").includes(activity.sport_type) && (
-                            <ActivityMapSummary activity={activity} allowedTypes={allowedTypes} />
+                        {allowedTypes.concat("Hike").includes(activity.sport_type) && detailData && (
+                            <ActivityMapSummary detailData={detailData} activity={activity} allowedTypes={allowedTypes} />
                         )}
 
                         <div className="w-full">
@@ -85,7 +80,9 @@ const ActivityDetail = () => {
                                     )}
 
                                     <div className="grid grid-cols-2 gap-4">
-                                        {activity.sport_type === "Swim" && <NatationGraph streamData={streamData} />}
+                                        {activity.sport_type === "Swim" &&
+                                            <NatationGraph streamData={streamData} />
+                                        }
                                         {["Workout", "WeightTraining"].includes(activity.sport_type) && (
                                             <TrainingGraph streamData={streamData} />
                                         )}
@@ -93,6 +90,9 @@ const ActivityDetail = () => {
                                             <BarChart streamData={streamData} />
                                         )}
                                         <DoughnutChart streamData={streamData} />
+                                        {["Run", "TrailRun"].includes(activity.sport_type) && (
+                                            <PaceBySlope streamData={streamData} />
+                                        )}
                                     </div>
 
                                     {fastestRecords.length > 0 && (

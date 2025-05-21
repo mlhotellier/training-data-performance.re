@@ -97,37 +97,12 @@ export const fetchActivityStreams = async (id: string, token: string) => {
             'Content-Type': 'application/json'
         }
     });
-    return handleApiResponse(response);
-};
 
-export const fetchLocation = async (lat: number, lon: number, token: string): Promise<string> => {
-    const response = await fetch(`${serverUrl}/api/externals/location?lat=${lat}&lon=${lon}`, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        }
-    });
-    return handleApiResponse(response);
-};
+    const data = await handleApiResponse(response);
 
-export const fetchWeather = async (
-    lat: number,
-    lon: number,
-    date: string,
-    hour: number,
-    minute: number,
-    token: string
-): Promise<{ description: string; temperature: number }> => {
-    const response = await fetch(
-        `${serverUrl}/api/externals/weather?lat=${lat}&lon=${lon}&date=${date}&hour=${hour}&minute=${minute}`,
-        {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        }
-    );
-    return handleApiResponse(response);
+    return {
+        streams: data.streams,
+        location: data.location,
+        weather: data.weather,
+    };
 };

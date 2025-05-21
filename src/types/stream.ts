@@ -12,3 +12,13 @@ export type StreamData = {
     [key: string]: Stream[];
 };
 
+export interface WeatherData {
+  temperature: number;
+  description: string;
+}
+
+export interface ActivityDetailData {
+  streams: StreamData;
+  location: string | null;
+  weather: WeatherData | null;
+}

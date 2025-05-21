@@ -55,8 +55,7 @@ const TrainingGraph = ({ streamData }: Props) => {
         plugins: {
             legend: { display: true },
             title: {
-                display: true,
-                text: 'Fréquence cardiaque au cours de l’effort',
+                display: false,
             },
         },
         scales: {
