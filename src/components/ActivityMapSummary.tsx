@@ -23,21 +23,21 @@ const ActivityMapSummary = ({ activity, allowedTypes }: ActivityMapSummaryProps)
     useEffect(() => {
         if (!token || !activity?.start_latlng || !allowedTypes.includes(activity.sport_type)) return;
         const [lat, lon] = activity.start_latlng;
-        
+
         fetchLocation(lat, lon, token).then(setLocation).catch(console.error);
     }, [activity]);
 
-    // useEffect(() => {
-    //     if (!token || !activity?.start_latlng || !activity?.start_date_local || !allowedTypes.includes(activity.sport_type)) return;
+    useEffect(() => {
+        if (!token || !activity?.start_latlng || !activity?.start_date_local || !allowedTypes.includes(activity.sport_type)) return;
 
-    //     const [lat, lon] = activity.start_latlng;
-    //     const startDate = new Date(activity.start_date_local);
-    //     const startHour = startDate.getUTCHours();
-    //     const startMinute = startDate.getUTCMinutes();
-    //     const dateStr = `${startDate.getFullYear()}-${(startDate.getMonth() + 1).toString().padStart(2, '0')}-${startDate.getDate().toString().padStart(2, '0')}`;
+        const [lat, lon] = activity.start_latlng;
+        const startDate = new Date(activity.start_date_local);
+        const startHour = startDate.getUTCHours();
+        const startMinute = startDate.getUTCMinutes();
+        const dateStr = `${startDate.getFullYear()}-${(startDate.getMonth() + 1).toString().padStart(2, '0')}-${startDate.getDate().toString().padStart(2, '0')}`;
 
-    //     fetchWeather(lat, lon, dateStr, startHour, startMinute, token).then(setWeather).catch(console.error);
-    // }, [activity]);
+        fetchWeather(lat, lon, dateStr, startHour, startMinute, token).then(setWeather).catch(console.error);
+    }, [activity]);
 
     return (
         <div id="map">
