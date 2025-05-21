@@ -10,11 +10,16 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
-import { NatationGraphProps } from '../types/index';
+import { StreamData } from '../types/index';
 
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, Title, Tooltip, Legend);
 
-const NatationGraph: React.FC<NatationGraphProps> = ({ streamData }) => {
+
+interface Props {
+    streamData: StreamData;
+}
+
+const NatationGraph = ({ streamData }: Props) => {
 
 
     if (!streamData || !streamData.distance || !streamData.heartrate || !streamData.velocity_smooth) {
@@ -24,9 +29,9 @@ const NatationGraph: React.FC<NatationGraphProps> = ({ streamData }) => {
     const { heartrate, velocity_smooth } = streamData;
 
     // Construction des tableaux pour le graphique
-    const paceData = velocity_smooth?.data.map(v => v > 0 ? (100 / v / 60).toFixed(2) : null) || [];
-    const heartRateData = heartrate?.data || [];
-    const dataLength = heartrate?.data.length || 0;
+    const paceData = velocity_smooth[0]?.data.map(v => v > 0 ? (100 / v / 60).toFixed(2) : null) || [];
+    const heartRateData = heartrate[0]?.data || [];
+    const dataLength = heartrate[0]?.data.length || 0;
     const timeLabels = Array.from({ length: dataLength }, (_, i) => i);
 
     const interval = 100;

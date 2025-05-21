@@ -5,15 +5,16 @@ import { StreamData } from "../types/index";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-type DoughnutChartProps = {
-    streamData: StreamData | null;
-};
+
+interface Props {
+    streamData: StreamData;
+}
 
 const convertPointsToSeconds = (points: number, intervalSeconds: number) => {
     return points * intervalSeconds; // Convertir en secondes
 };
 
-const DoughnutChart = ({ streamData }: DoughnutChartProps) => {
+const DoughnutChart = ({ streamData }: Props) => {
     const maxHeartRate = 191;
 
     const chartData = useMemo(() => {

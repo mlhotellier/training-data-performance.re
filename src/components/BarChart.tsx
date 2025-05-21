@@ -8,13 +8,13 @@ import Loader from "./Loader";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const BarCharts = () => {
+interface Props {
+    streamData: StreamData;
+}
+
+const BarCharts = ({ streamData }: Props) => {
     const { id } = useParams<{ id: string }>();
     const [activity, setActivity] = useState<Activity | null>(null);
-    const [streamData, setStreamData] = useState<StreamData | null>(null);
-    const [loading, setLoading] = useState(true);
-
-    const token = localStorage.getItem('token');
 
     useEffect(() => {
         const storedActivities = sessionStorage.getItem('activities');
@@ -25,40 +25,13 @@ const BarCharts = () => {
         }
     }, [id]);
 
-    useEffect(() => {
-        const fetchStreams = async () => {
-            const cached = sessionStorage.getItem(`activityDetails-${id}`);
-            if (cached) {
-                setStreamData(JSON.parse(cached));
-                setLoading(false);
-            } else if (token) {
-                try {
-                    const res = await fetch(`http://localhost:5000/api/activities/${id}/streams`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                            "Content-Type": "application/json",
-                        },
-                    });
-                    if (!res.ok) throw new Error("Erreur de récupération des streams");
-                    const data = await res.json();
-                    setStreamData(data);
-                    sessionStorage.setItem(`activityDetails-${id}`, JSON.stringify(data));
-                } catch (err) {
-                    console.error(err);
-                } finally {
-                    setLoading(false);
-                }
-            }
-        };
-
-        fetchStreams();
-    }, [id, token]);
 
     const chartData = useMemo(() => {
         if (!streamData) return null;
 
         const distances = streamData.distance?.[0]?.data.map(d => d / 1000) || []; // en km
         const velocities = streamData.velocity_smooth?.[0]?.data || [];
+
 
         const timesPerSegment: number[] = [];
         const labels: string[] = [];
@@ -173,7 +146,7 @@ const BarCharts = () => {
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     }, [activity]);
 
-    if (loading || !chartData) return <Loader />;
+    if (!chartData) return <Loader />;
 
     return (
         <div>

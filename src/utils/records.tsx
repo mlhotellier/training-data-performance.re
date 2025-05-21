@@ -1,7 +1,7 @@
 import { FastestKm, StreamData } from "../types";
 
 export function getFastestKmsFromStreams(streamData: StreamData, activityId: string): FastestKm[] {
-    const distance = streamData?.distance?.data || [];
+    const distance = streamData?.distance[0]?.data || [];
 
     if (distance.length === 0) {
         return [];
@@ -36,7 +36,7 @@ export function getFastestKmsFromStreams(streamData: StreamData, activityId: str
     };
 
     // Distances : 1 km, 5 km, 10 km, 21.1 km
-    const distances = [1000, 5000, 10000, 21100];
+    const distances = [1000, 5000, 10000, 21100, 30000, 42195];
 
     for (const d of distances) {
         const record = getFastestSegment(d);

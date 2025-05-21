@@ -12,10 +12,3 @@ export type StreamData = {
     [key: string]: Stream[];
 };
 
-export interface NatationGraphProps {
-    streamData: StreamData;
-}
-
-export interface TrainingGraphProps {
-    streamData: StreamData;
-}

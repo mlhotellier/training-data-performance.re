@@ -39,7 +39,9 @@ const ActivityDetail = () => {
             if (!id || !token) return;
             const stored = sessionStorage.getItem(`activityDetails-${id}`);
             if (stored) {
-                setStreamData(JSON.parse(stored));
+                const parsed = JSON.parse(stored);
+                setStreamData(parsed.streams);
+                setLoading(false);
             } else {
                 const data = await fetchActivityStreams(id, token);
                 setStreamData(data.streams);
@@ -84,11 +86,11 @@ const ActivityDetail = () => {
 
                                     <div className="grid grid-cols-2 gap-4">
                                         {activity.sport_type === "Swim" && <NatationGraph streamData={streamData} />}
-                                        {["Workout", "WeightTraining", "Racquetball"].includes(activity.sport_type) && (
+                                        {["Workout", "WeightTraining"].includes(activity.sport_type) && (
                                             <TrainingGraph streamData={streamData} />
                                         )}
                                         {allowedTypes.includes(activity.sport_type) && (
-                                            <BarChart />
+                                            <BarChart streamData={streamData} />
                                         )}
                                         <DoughnutChart streamData={streamData} />
                                     </div>
