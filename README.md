@@ -1,7 +1,7 @@
 # Data Training Performance
 
 Bienvenue dans le frontend de l'application **Data Training Performance** !  
-Ce projet est développé avec **React** et permet d'afficher et d'explorer vos activités sportives (données GPS, météo, lieux, graphiques, etc.) en interaction avec un backend **Express/MongoDB**.
+Ce projet est développé avec **React** et permet d'afficher et d'explorer vos activités sportives (données GPS, météo, lieux, graphiques, etc.) en interaction avec un backend **Express/MongoDB** disponible ici : [_backend_training-data-performance.re](https://github.com/mlhotellier/_backend_training-data-performance.re)
 
 ## Table des matières
 - [Installation](#installation)
@@ -37,6 +37,8 @@ Ce projet est développé avec **React** et permet d'afficher et d'explorer vos 
    ```
 
 ## Configuration
+
+Pensez à installer et configurer le [backend](https://github.com/mlhotellier/_backend_training-data-performance.re) correctement. 
 
 Créez un fichier `.env` à la racine du projet pour définir vos variables d’environnement :
 
