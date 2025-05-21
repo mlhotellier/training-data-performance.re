@@ -103,14 +103,16 @@ const DoughnutChart = ({ streamData }: Props) => {
     if (!chartData) return <p>Données cardio non disponibles</p>;
 
     return (
-        <div className="bg-white shadow-md rounded-xl p-4 mb-4 relative">
-            <h2 className="text-xl font-semibold mb-4">Répartition par zones cardio</h2>
-            <div className="mb-4 text-gray-600 absolute top-4 right-4 flex items-center justify-center space-x-1 bg-zinc-100 rounded-xl p-2">
-                <p className="text-xs text-center">Moy.</p>
-                <p>{averageHeartRate ? `${averageHeartRate} bpm` : "N/A"}</p>
-            </div>
-            <div className="relative h-80 mx-auto">
-                <Doughnut data={chartData} options={options} />
+        <div>
+            <div className="bg-white shadow-md rounded-xl p-4 mb-4 relative">
+                <h2 className="text-xl font-semibold mb-4">Répartition par zones cardio</h2>
+                <div className="mb-4 text-gray-600 absolute top-4 right-4 flex items-center justify-center space-x-1 bg-zinc-100 rounded-xl p-2">
+                    <p className="text-xs text-center">Moy.</p>
+                    <p>{averageHeartRate ? `${averageHeartRate} bpm` : "N/A"}</p>
+                </div>
+                <div className="relative h-80 mx-auto">
+                    <Doughnut data={chartData} options={options} />
+                </div>
             </div>
         </div>
     );

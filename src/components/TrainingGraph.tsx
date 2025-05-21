@@ -77,8 +77,10 @@ const TrainingGraph = ({ streamData }: Props) => {
     };
 
     return (
-        <div className="bg-white shadow-md rounded-xl p-4 mb-4 relative">
-            <Line data={chartData} options={options} />
+        <div>
+            <div className="bg-white shadow-md rounded-xl p-4 mb-4 relative">
+                <Line data={chartData} options={options} />
+            </div>
         </div>
     );
 };
